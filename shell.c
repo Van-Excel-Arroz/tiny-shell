@@ -3,6 +3,7 @@
 
 int main(void) {
     char line[1024];
+    char *args[64];
 
     while (1) {
         printf("> ");
@@ -13,7 +14,31 @@ int main(void) {
         }
 
         line[strcspn(line, "\n")] = '\0';
-        printf("you typed: [%s]\n", line);
+        int argc = 0;
+        int i = 0;
+
+        while (line[i] != '\0' && argc < 63) {
+            while (line[i] == ' ' || line[i] == '\t') {
+                line[i] = '\0';
+                i++;
+            }
+
+            if (line[i] == '\0') {
+                break;
+            }
+
+            args[argc] = &line[i];
+            argc++;
+
+            while (line[i] != ' ' && line[i] != '\t' &&line[i] != '\0') {
+                i++;
+            }
+        }
+        args[argc] = NULL;
+        
+        for (int j = 0; j < argc; j++) {
+            printf("args[%d] = [%s]\n", j, args[j]);
+        }
     }
 
     return 0;
